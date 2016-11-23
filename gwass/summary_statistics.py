@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import itertools as it
 
+
 class SummaryStatistics: 
     '''class for processing genome-wide association summary statistics'''
 
@@ -131,14 +132,58 @@ class SummaryStatistics:
     
     def _remove_strand_ambiguous_snps(self):
         ''' '''
-        self.summary_statistics = self.summary_statistics[self.summary_statistics.apply(lambda row: self.remove_strand_ambiguous_snp(row['a1'], 
+        self.summary_statistics = self.summary_statistics[self.summary_statistics.apply(lambda row: self._remove_strand_ambiguous_snp(row['a1'], 
                                                                                         row['a2'], self.strand_ambiguous_alleles),  axis=1)]
         # snp counts
         self.n_fil_strand = self.n_fil_snps - self.summary_statistics.shape[0]        
         self.n_fil_strand = self.summary_statistics.shape[0]
 
-    '''
-    TODO: add rest of code and function run all qc steps
-    '''
-            
+    def _orient_snp_effect_sign(a1, a2, effect_allele, other_allele, beta_hat, base_complement):
+        '''
+        orients beta_hat to measure effect on derived allele 
+        when known otherwise to the alternate allele.
+        '''
+        if (a1 == other_allele) and (a2 == effect_allele):    
+            beta_hat = -beta_hat
+        elif (a1 == base_complement[other_allele]) and (a2 == base_complement[effect_allele]):
+            beta_hat = -beta_hat
+        elif (a1 == effect_allele) and (a2 == other_allele):
+            beta_hat = beta_hat
+        elif (a1 == base_complement[effect_allele]) and (a2 == base_complement[other_allele]):
+            beta_hat = beta_hat
+        else:
+            raise ValueError('inconsistent alleles')
+        return(beta_hat)
 
+    def _orient_snp_effect_signs(self):
+        '''applys _orient_snp_effect_sign to all snps in the DataFrame'''
+        self.summary_statistics['beta'] = self.summary_statistics.apply(lambda row: self._orient_effect_sign(row['a1'], row['a2'], 
+                                                                                                             row['effect_allele'], 
+                                                                                                             row['other_allele'], 
+                                                                                                             row['beta_hat'], 
+                                                                                                             self.base_complement), 
+                                                                                                             axis=1)
+
+    def _clean_data_frame(self):
+        '''drops uncessary cols, reorders cols and sorts by chrom-pos'''
+        # drop a1 and a2 columns
+        self.summary_statistics.drop('a1', axis=1, inplace=True) 
+        self.summary_statistics.drop('a2', axis=1, inplace=True) 
+        # reorder columns
+        self.summary_statistics[['chrom', 'pos', 'snp', 'effect_allele', 'other_allele', 'alt_allele', 'ref_allele',
+                                 'derived_allele', 'ancestral_allele', 'ref_base_l2', 'ref_base_l1', 'ref_base_r1',
+                                 'ref_base_r2', 'f_sas','f_afr', 'f_eas', 'f_eur', 'f_amr', 'beta_hat', 'se']]
+        # sort columns
+        self.summary_statistics = self.summary_statistics.sort_values(['chrom', 'pos'], ascending=[True, True])
+
+    def clean_summary_statistics(self):
+        '''public call of functions to clean summary statistics'''
+        self._read_summary_statistics()
+        self._read_snps()
+        self._alleles_to_upper()
+        self._remove_indels()
+        self._merge_summary_statistics_with_snps()
+        self._transform_or_to_beta_hat()
+        self._remove_strand_ambiguous_snps()
+        self._orient_snp_effect_signs()
+        self._clean_data_frame()

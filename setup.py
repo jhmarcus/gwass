@@ -12,6 +12,9 @@ setup(name='gwass',
           'numpy',
           'pandas',
           'cython',
-          'pysam'
+          'pysam',
+          'nose'
       ],
+      test_suite='nose.collector',
+      tests_require=['nose'],
       zip_safe=False)

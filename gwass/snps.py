@@ -133,15 +133,15 @@ class Snps:
         vcf = pysam.VariantFile(self.sites_vcf_path) 
         ref_genome = pysam.FastaFile(self.ref_genome_path)
         header = 'chrom\tpos\tsnp\teffect_allele\tother_allele\talt_allele\tref_allele\t' \
-                 'derived_allele\tancestral_allele\tref_base_l2\tref_base_l1\tref_base_r1\tref_base_r2\t' \
+                 'derived_allele\tancestral_allele\tallele_type\tref_base_l2\tref_base_l1\tref_base_r1\tref_base_r2\t' \
                  'f_sas\tf_afr\tf_eas\tf_eur\tf_amr\n'
         sys.stdout.write(header)
         for rec in vcf.fetch():
             snp = Snp(rec, ref_genome)
-            sys.stdout.write('{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\n'.format(snp.chrom, snp.pos, snp.rsid, 
-                                                                                                               snp.effect_allele, snp.other_allele, 
-                                                                                                               snp.alt_allele, snp.ref_allele,
-                                                                                                               snp.derived_allele, snp.ancestral_allele, 
-                                                                                                               snp.ref_l2, snp.ref_l1, snp.ref_r1, snp.ref_r2,
-                                                                                                               snp.f_sas, snp.f_afr, snp.f_eas, snp.f_eur, 
-                                                                                                               snp.f_amr))
+            sys.stdout.write('{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\n'.format(snp.chrom, snp.pos, snp.rsid, 
+                                                                                                                   snp.effect_allele, snp.other_allele, 
+                                                                                                                   snp.alt_allele, snp.ref_allele,
+                                                                                                                   snp.derived_allele, snp.ancestral_allele, snp.allele_type, 
+                                                                                                                   snp.ref_l2, snp.ref_l1, snp.ref_r1, snp.ref_r2,
+                                                                                                                   snp.f_sas, snp.f_afr, snp.f_eas, snp.f_eur, 
+                                                                                                                   snp.f_amr))

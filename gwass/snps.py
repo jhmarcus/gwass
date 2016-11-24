@@ -5,6 +5,7 @@ import numpy as np
 import pysam
 import sys        
 
+
 class Snp:
     ''' 
     extract ancestral and derived allele information from 

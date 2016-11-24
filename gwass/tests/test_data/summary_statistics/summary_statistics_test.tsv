@@ -1,0 +1,7 @@
+SNP	A1	A2	BETA	SE
+rs0	c	g	0.1	.01
+rs1	A	C	0.1	.01
+rs2	A	T	.1	.01
+rs3	T	G	.1	.01
+rs4	I1	I2	.1	.01
+rs5	A	G	.1	.01

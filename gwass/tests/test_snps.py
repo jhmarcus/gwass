@@ -9,10 +9,10 @@ class TestSnp(TestCase):
     def setUp(self):
         ''' ''' 
         # variant files
-        snp_aa_vcf = pysam.VariantFile('gwass/tests/test_data/snp_aa.vcf.gz')    
-        snp_no_aa_0_vcf = pysam.VariantFile('gwass/tests/test_data/snp_no_aa_0.vcf.gz')
-        snp_no_aa_1_vcf = pysam.VariantFile('gwass/tests/test_data/snp_no_aa_1.vcf.gz')
-        snp_small_aa_vcf = pysam.VariantFile('gwass/tests/test_data/snp_small_aa.vcf.gz')
+        snp_aa_vcf = pysam.VariantFile('gwass/tests/test_data/vcf/snp_aa.vcf.gz')    
+        snp_no_aa_0_vcf = pysam.VariantFile('gwass/tests/test_data/vcf/snp_no_aa_0.vcf.gz')
+        snp_no_aa_1_vcf = pysam.VariantFile('gwass/tests/test_data/vcf/snp_no_aa_1.vcf.gz')
+        snp_small_aa_vcf = pysam.VariantFile('gwass/tests/test_data/vcf/snp_small_aa.vcf.gz')
         # records
         snp_aa_rec = [rec for rec in snp_aa_vcf][0]
         snp_no_aa_0_rec = [rec for rec in snp_no_aa_0_vcf][0]

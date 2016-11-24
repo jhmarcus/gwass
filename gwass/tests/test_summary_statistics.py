@@ -35,7 +35,6 @@ class TestSummaryStatistics(TestCase):
         self.ss._remove_indels()
         self.assertEqual(self.ss.summary_statistics.shape[0], 5) 
 
-
     def test_merge_summary_statistics_with_snps(self):
         ''' '''
         self.ss._read_summary_statistics()

@@ -13,16 +13,18 @@ class TestSnp(TestCase):
         snp_no_aa_0_vcf = pysam.VariantFile('gwass/tests/test_data/vcf/snp_no_aa_0.vcf.gz')
         snp_no_aa_1_vcf = pysam.VariantFile('gwass/tests/test_data/vcf/snp_no_aa_1.vcf.gz')
         snp_small_aa_vcf = pysam.VariantFile('gwass/tests/test_data/vcf/snp_small_aa.vcf.gz')
+        # fasta 
+        ref_genome = pysam.FastaFile('gwass/tests/test_data/fasta/ref_test.fa')
         # records
         snp_aa_rec = [rec for rec in snp_aa_vcf][0]
         snp_no_aa_0_rec = [rec for rec in snp_no_aa_0_vcf][0]
         snp_no_aa_1_rec = [rec for rec in snp_no_aa_1_vcf][0]
         snp_small_aa_rec = [rec for rec in snp_small_aa_vcf][0]
         # snps
-        self.snp_aa = gwass.Snp(snp_aa_rec)
-        self.snp_no_aa_0 = gwass.Snp(snp_no_aa_0_rec)
-        self.snp_no_aa_1 = gwass.Snp(snp_no_aa_1_rec)
-        self.snp_small_aa = gwass.Snp(snp_small_aa_rec)
+        self.snp_aa = gwass.Snp(snp_aa_rec, ref_genome)
+        self.snp_no_aa_0 = gwass.Snp(snp_no_aa_0_rec, ref_genome)
+        self.snp_no_aa_1 = gwass.Snp(snp_no_aa_1_rec, ref_genome)
+        self.snp_small_aa = gwass.Snp(snp_small_aa_rec, ref_genome)
 
     def test_coordinates(self):
         ''' ''' 

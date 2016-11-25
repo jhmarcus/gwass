@@ -1,4 +1,5 @@
 # gwass
 
-a python package for processing Genome-Wide Association Summary Statistics 
+A python package for analyzing Genome-Wide Association Summary Statistics (gwass) 
 
+*in progress*

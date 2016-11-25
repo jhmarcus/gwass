@@ -132,9 +132,9 @@ class SummaryStatistics:
 
     def _orient_snp_effect_signs(self):
         '''applys _orient_snp_effect_sign to all snps in the DataFrame'''
-        self.summary_statistics['beta_hat'] = self.summary_statistics.apply(lambda row: orient_snp_effect_sign(row['a1'], row['a2'], row['effect_allele'], 
-                                                                                                               row['other_allele'], row['beta_hat'], 
-                                                                                                               self.base_complement), axis=1)
+        self.summary_statistics['beta_hat'] = self.summary_statistics.apply(lambda row: orient_snp_effect_sign(row['snp'], row['a1'], row['a2'], 
+                                                                                                               row['effect_allele'], row['other_allele'], 
+                                                                                                               row['beta_hat'], self.base_complement), axis=1)
 
     def _clean_data_frame(self):
         '''drops uncessary cols, reorders cols and sorts by chrom-pos'''
@@ -155,7 +155,8 @@ class SummaryStatistics:
         self._alleles_to_upper()
         self._remove_indels()
         self._merge_summary_statistics_with_snps()
-        self._transform_or_to_beta_hat()
+        if 'or' in list(self.summary_statistics.columns):
+            self._transform_or_to_beta_hat()
         self._remove_strand_ambiguous_snps()
         self._orient_snp_effect_signs()
         self._clean_data_frame()
@@ -168,7 +169,7 @@ def remove_strand_ambiguous_snp(a1, a2, strand_ambiguous_alleles):
     else:
         return(True)
 
-def orient_snp_effect_sign(a1, a2, effect_allele, other_allele, beta_hat, base_complement):
+def orient_snp_effect_sign(snp, a1, a2, effect_allele, other_allele, beta_hat, base_complement):
     '''
     orients beta_hat to measure effect on derived allele 
     when known otherwise to the alternate allele.
@@ -182,6 +183,6 @@ def orient_snp_effect_sign(a1, a2, effect_allele, other_allele, beta_hat, base_c
     elif (a1 == base_complement[effect_allele]) and (a2 == base_complement[other_allele]):
         beta_hat = beta_hat
     else:
-        raise ValueError('inconsistent alleles')
+        raise ValueError('inconsistent alleles: snp={},a1={},a2={},effect_allele={},other_allele={}'.format(snp, a1, a2, effect_allele, other_allele))
     return(beta_hat)
 

@@ -62,6 +62,7 @@ class SummaryStatistics:
         self.n_fil_indels = None
         self.n_fil_merged = None
         self.n_fil_strand = None
+        self.n_fil_inconsistent = None
         self.n_fil_snps = None
 
     def _read_summary_statistics(self):
@@ -123,12 +124,22 @@ class SummaryStatistics:
         self.summary_statistics.drop('or', axis=1, inplace=True)
     
     def _remove_strand_ambiguous_snps(self):
-        ''' '''
-        self.summary_statistics = self.summary_statistics[self.summary_statistics.apply(lambda row: remove_strand_ambiguous_snp(row['a1'], row['a2'], self.strand_ambiguous_alleles), axis=1)]
+        '''removes snps where strand cannot be determined'''
+        self.summary_statistics = self.summary_statistics[self.summary_statistics.apply(lambda row: remove_strand_ambiguous_snp(row['a1'], row['a2'], 
+                                                                                                                                self.strand_ambiguous_alleles), 
+                                                                                                                                axis=1)]
         # snp counts
         self.n_fil_strand = self.n_fil_snps - self.summary_statistics.shape[0]        
-        self.n_fil_strand = self.summary_statistics.shape[0]
+        self.n_fil_snps = self.summary_statistics.shape[0]
 
+    def _remove_inconsistent_snps(self):
+        '''removes snps where alleles are inconsistent between both datasets'''
+        self.summary_statistics = self.summary_statistics[self.summary_statistics.apply(lambda row: remove_inconsistent_snp(row['a1'], row['a2'], 
+                                                                                                                            row['effect_allele'], row['other_allele'],
+                                                                                                                            self.base_complement), axis=1)]
+        # snp counts
+        self.n_fil_inconsistent = self.n_fil_snps - self.summary_statistics.shape[0] 
+        self.n_fil_snps = self.summary_statistics.shape[0]
 
     def _orient_snp_effect_signs(self):
         '''applys _orient_snp_effect_sign to all snps in the DataFrame'''
@@ -141,15 +152,12 @@ class SummaryStatistics:
         # drop a1 and a2 columns
         self.summary_statistics.drop('a1', axis=1, inplace=True) 
         self.summary_statistics.drop('a2', axis=1, inplace=True) 
-        # reorder columns
-        self.summary_statistics[['chrom', 'pos', 'snp', 'effect_allele', 'other_allele', 'alt_allele', 'ref_allele',
-                                 'derived_allele', 'ancestral_allele', 'ref_base_l2', 'ref_base_l1', 'ref_base_r1',
-                                 'ref_base_r2', 'f_sas','f_afr', 'f_eas', 'f_eur', 'f_amr', 'beta_hat', 'se']]
         # sort columns
         self.summary_statistics = self.summary_statistics.sort_values(['chrom', 'pos'], ascending=[True, True])
 
-    def clean_summary_statistics(self):
+    def clean_summary_statistics(self, out):
         '''public call of functions to clean summary statistics'''
+        # summary_statistics pipleline
         self._read_summary_statistics()
         self._read_snps()
         self._alleles_to_upper()
@@ -158,16 +166,44 @@ class SummaryStatistics:
         if 'or' in list(self.summary_statistics.columns):
             self._transform_or_to_beta_hat()
         self._remove_strand_ambiguous_snps()
+        self._remove_inconsistent_snps()
         self._orient_snp_effect_signs()
         self._clean_data_frame()
+        col_names = ['chrom', 'pos', 'snp', 'allele_type', 'effect_allele', 'other_allele', 'alt_allele', 'ref_allele',
+                     'derived_allele', 'ancestral_allele', 'ref_base_l2', 'ref_base_l1', 'ref_base_r1',
+                     'ref_base_r2', 'f_sas','f_afr', 'f_eas', 'f_eur', 'f_amr', 'beta_hat', 'se']
+        self.summary_statistics.to_csv('{}.tsv.gz'.format(out), sep='\t', compression='gzip', index=False, columns=col_names)
+
+        # snp counts 
+        fil_dict = {'n_snps': np.array([self.n_snps]), 'n_fil_snps': np.array([self.n_fil_snps]), 'n_fil_indels': np.array([self.n_fil_indels]), 
+                    'n_fil_merged': np.array([self.n_fil_merged]), 'n_fil_strand': np.array([self.n_fil_strand]), 
+                    'n_fil_inconsistent': np.array([self.n_fil_inconsistent])}
+        fil_df = pd.DataFrame(fil_dict)
+        fil_df_cols = ['n_snps', 'n_fil_snps', 'n_fil_indels', 'n_fil_merged', 'n_fil_strand', 'n_fil_inconsistent']
+        fil_df.to_csv('{}_fil.tsv'.format(out), sep='\t', index=False, columns=fil_df_cols)
+
+# helper functions for methods
 
 def remove_strand_ambiguous_snp(a1, a2, strand_ambiguous_alleles):
-    ''' '''
+    '''remove snps where strand cannot be determined'''
     a1a2 = a1 + a2
     if strand_ambiguous_alleles[a1a2]:
         return(False)
     else:
         return(True)
+
+def remove_inconsistent_snp(a1, a2, effect_allele, other_allele, base_complement):
+    '''remove snps with inconsistent alleles between the datasets'''
+    if (a1 == other_allele) and (a2 == effect_allele):    
+        return(True)
+    elif (a1 == base_complement[other_allele]) and (a2 == base_complement[effect_allele]):
+        return(True)
+    elif (a1 == effect_allele) and (a2 == other_allele):
+        return(True)
+    elif (a1 == base_complement[effect_allele]) and (a2 == base_complement[other_allele]):
+        return(True)
+    else:
+        return(False)
 
 def orient_snp_effect_sign(snp, a1, a2, effect_allele, other_allele, beta_hat, base_complement):
     '''

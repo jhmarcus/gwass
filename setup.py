@@ -17,5 +17,5 @@ setup(name='gwass',
       ],
       test_suite='nose.collector',
       tests_require=['nose'],
-      scripts=['bin/create-snps'],
+      scripts=['bin/create-snps', 'bin/clean-summary-statistics'],
       zip_safe=False)

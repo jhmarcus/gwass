@@ -4,8 +4,8 @@ import gwass
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--sites', default=None, type=str, help='', required=True)
-parser.add_argument('--ref', default=None, type=str, help='', required=True)
+parser.add_argument('--sites', default=None, type=str, help='sites vcf carrying ancestral allele annotation', required=True)
+parser.add_argument('--ref', default=None, type=str, help='reference genome fasta', required=True)
 args = parser.parse_args()
 
 s = gwass.Snps(sites_vcf_path=args.sites, ref_genome_path=args.ref)

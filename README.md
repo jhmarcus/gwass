@@ -80,21 +80,21 @@ create-snps --sites <path>/ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.201305
 * `snp`: rsID
 * `effect_allele`: allele which effect sign is to be oriented to
 * `other_allele`: other allele which effect sign is not oriented to
+* `ref_allele`: the allele in the reference genome
+* `alt_allele`: the alternate allele to the reference genome
 * `derived_allele`: the derived allele determined by multi-way alignment
 * `ancestral_allele` the ancestral allele determined by multi-way alignment
 * `minor_allele`: the globally minor allele determined by 1KG Phase3
 * `major_allele`: the globally major allele determined by 1KG Phase3
-* `ref_allele`: the allele in the reference genome
-* `alt_allele`: the alternate allele to the reference genome
 * `allele_type`: the type of the effect allele / other allele which is either derived_ancestral or minor_major
 * `ref_base_l2`: the reference base two positions to the left of the SNP
 * `ref_base_l1`: the reference base one positions to the left of the SNP
 * `ref_base_r1`: the reference base one positions to the right of the SNP
 * `ref_base_r2`: the reference base two positions to the right of the SNP
 * `f_sas`: effect allele frequency in 1KG Phase3 in South Asians
+* `f_afr`: effect allele frequency in 1KG Phase3 in Africans
 * `f_eas`: effect allele frequency in 1KG Phase3 in East Asians
 * `f_eur`: effect allele frequency in 1KG Phase3 in Europeans
-* `f_afr`: effect allele frequency in 1KG Phase3 in Africans
 * `f_amr`: effect allele frequency in 1KG Phase3 in Americans
 
 ### Clean summary statistics
@@ -103,7 +103,7 @@ create-snps --sites <path>/ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.201305
 
 ```
 clean-summary-statistics --summary_statistics <path>/GIANT_HEIGHT_Wood_et_al_2014_publicrelease_HapMapCeuFreq.txt.gz \
-                         --snps <path>/1kg_phase3_snps.tsv.gz 
+                         --snps <path>/1kg_phase3_snps.tsv.gz
                          --out giant_height_summary_statistics
 ```
 

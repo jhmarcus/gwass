@@ -91,11 +91,11 @@ create-snps --sites <path>/ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.201305
 * `ref_base_l1`: the reference base one positions to the left of the SNP
 * `ref_base_r1`: the reference base one positions to the right of the SNP
 * `ref_base_r2`: the reference base two positions to the right of the SNP
-* `f_sas`: effect allele frequency in 1KG Phase3 south asians
-* `f_eas`: effect allele frequency in 1KG Phase3 east asians
-* `f_eur`: effect allele frequency in 1KG Phase3 europeans
-* `f_afr`: effect allele frequency in 1KG Phase3 africans
-* `f_amr`: effect allele frequency in 1KG Phase3 americans
+* `f_sas`: effect allele frequency in 1KG Phase3 in South Asians
+* `f_eas`: effect allele frequency in 1KG Phase3 in East Asians
+* `f_eur`: effect allele frequency in 1KG Phase3 in Europeans
+* `f_afr`: effect allele frequency in 1KG Phase3 in Africans
+* `f_amr`: effect allele frequency in 1KG Phase3 in Americans
 
 ### Clean summary statistics
 

@@ -103,7 +103,7 @@ create-snps --sites <path>/ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.201305
 
 ```
 clean-summary-statistics --summary_statistics <path>/GIANT_HEIGHT_Wood_et_al_2014_publicrelease_HapMapCeuFreq.txt.gz \
-                         --snps <path>/1kg_phase3_snps  
+                         --snps <path>/1kg_phase3_snps.tsv.gz 
                          --out giant_height_summary_statistics
 ```
 

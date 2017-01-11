@@ -27,6 +27,7 @@ class SummaryStatistics:
                                   'SNPID': 'snp',
                                   'MarkerName': 'snp',
                                   'rs_number': 'snp',
+                                  'rsid': 'snp',
                                   'a1': 'a1', # a1
                                   'reference': 'a1',
                                   'reference_allele': 'a1',

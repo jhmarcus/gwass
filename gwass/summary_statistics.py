@@ -173,7 +173,7 @@ class SummaryStatistics:
         col_names = ['chrom', 'pos', 'snp', 'allele_type', 'effect_allele', 'other_allele', 'alt_allele', 'ref_allele',
                      'derived_allele', 'ancestral_allele', 'ref_base_l2', 'ref_base_l1', 'ref_base_r1',
                      'ref_base_r2', 'f_sas','f_afr', 'f_eas', 'f_eur', 'f_amr', 'beta_hat', 'se']
-        self.summary_statistics.to_csv('{}.tsv.gz'.format(out), sep='\t', compression='gzip', index=False, columns=col_names)
+        self.summary_statistics.to_csv('{}.tsv.gz'.format(out), sep='\t', compression='gzip', index=False, na_rep='NA', columns=col_names)
 
         # snp counts 
         fil_dict = {'n_snps': np.array([self.n_snps]), 'n_fil_snps': np.array([self.n_fil_snps]), 'n_fil_indels': np.array([self.n_fil_indels]), 
@@ -181,7 +181,7 @@ class SummaryStatistics:
                     'n_fil_inconsistent': np.array([self.n_fil_inconsistent])}
         fil_df = pd.DataFrame(fil_dict)
         fil_df_cols = ['n_snps', 'n_fil_snps', 'n_fil_indels', 'n_fil_merged', 'n_fil_strand', 'n_fil_inconsistent']
-        fil_df.to_csv('{}_fil.tsv'.format(out), sep='\t', index=False, columns=fil_df_cols)
+        fil_df.to_csv('{}_fil.tsv'.format(out), sep='\t', index=False, na_rep='NA', columns=fil_df_cols)
 
 # helper functions for methods
 

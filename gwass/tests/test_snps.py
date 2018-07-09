@@ -70,20 +70,6 @@ class TestSnp(TestCase):
         self.assertEqual(self.snp_small_aa.ref_allele, 'T')
         self.assertEqual(self.snp_small_aa.alt_allele, 'C')
 
-    def test_allele_type(self):
-        ''' '''
-        # snp_aa
-        self.assertEqual(self.snp_aa.allele_type, 'derived_ancestral')
-
-        # snp_no_aa_0
-        self.assertEqual(self.snp_no_aa_0.allele_type, 'minor_major')
-
-        # snp_no_aa_1
-        self.assertEqual(self.snp_no_aa_1.allele_type, 'minor_major')
-
-        # snp_small_aa
-        self.assertEqual(self.snp_small_aa.allele_type, 'derived_ancestral')
-
     def test_get_ancestral_derived_alleles(self):
         ''' '''
         # snp_aa
@@ -120,50 +106,32 @@ class TestSnp(TestCase):
         self.assertEqual(self.snp_small_aa.minor_allele, 'C')
         self.assertEqual(self.snp_small_aa.major_allele, 'T')
 
-    def test_get_effect_other_alleles(self):
-        ''' '''
-        # snp_aa
-        self.assertEqual(self.snp_aa.effect_allele, 'T')
-        self.assertEqual(self.snp_aa.other_allele, 'C')
-
-        # snp_no_aa_0
-        self.assertEqual(self.snp_no_aa_0.effect_allele, 'C')
-        self.assertEqual(self.snp_no_aa_0.other_allele, 'A')
-
-        # snp_no_aa_1
-        self.assertEqual(self.snp_no_aa_1.effect_allele, 'C')
-        self.assertEqual(self.snp_no_aa_1.other_allele, 'T')
-
-        # snp_small_aa
-        self.assertEqual(self.snp_small_aa.effect_allele, 'C')
-        self.assertEqual(self.snp_small_aa.other_allele, 'T')
-
     def test_get_allele_frequencies(self):
         ''' '''
         # snp_aa
-        self.assertAlmostEqual(self.snp_aa.f_sas, 0.0072, places=4)
-        self.assertAlmostEqual(self.snp_aa.f_afr, 0.0, places=4)
-        self.assertAlmostEqual(self.snp_aa.f_eur, 0.0, places=4)
-        self.assertAlmostEqual(self.snp_aa.f_eas, 0.0, places=4)
-        self.assertAlmostEqual(self.snp_aa.f_amr, 0.0, places=4)
+        self.assertAlmostEqual(self.snp_aa.f_sas, 1.0 - 0.0072, places=4)
+        self.assertAlmostEqual(self.snp_aa.f_afr, 1.0, places=4)
+        self.assertAlmostEqual(self.snp_aa.f_eur, 1.0, places=4)
+        self.assertAlmostEqual(self.snp_aa.f_eas, 1.0, places=4)
+        self.assertAlmostEqual(self.snp_aa.f_amr, 1.0, places=4)
 
         # snp_no_aa_0
-        self.assertAlmostEqual(self.snp_no_aa_0.f_sas, 0.0072, places=4)
-        self.assertAlmostEqual(self.snp_no_aa_0.f_afr, 0.0, places=4)
-        self.assertAlmostEqual(self.snp_no_aa_0.f_eur, 0.0089, places=4)
-        self.assertAlmostEqual(self.snp_no_aa_0.f_eas, 0.0, places=4)
-        self.assertAlmostEqual(self.snp_no_aa_0.f_amr, 0.0115, places=4)
+        self.assertAlmostEqual(self.snp_no_aa_0.f_sas, 1.0 - 0.0072, places=4)
+        self.assertAlmostEqual(self.snp_no_aa_0.f_afr, 1.0, places=4)
+        self.assertAlmostEqual(self.snp_no_aa_0.f_eur, 1.0 - 0.0089, places=4)
+        self.assertAlmostEqual(self.snp_no_aa_0.f_eas, 1.0, places=4)
+        self.assertAlmostEqual(self.snp_no_aa_0.f_amr, 1.0 - 0.0115, places=4)
 
         # snp_no_aa_1
-        self.assertAlmostEqual(self.snp_no_aa_1.f_sas, 0.001, places=4)
-        self.assertAlmostEqual(self.snp_no_aa_1.f_afr, 0.0, places=4)
-        self.assertAlmostEqual(self.snp_no_aa_1.f_eur, 0.0, places=4)
-        self.assertAlmostEqual(self.snp_no_aa_1.f_eas, 0.0, places=4)
-        self.assertAlmostEqual(self.snp_no_aa_1.f_amr, 0.0, places=4)
+        self.assertAlmostEqual(self.snp_no_aa_1.f_sas, 1.0 - 0.001, places=4)
+        self.assertAlmostEqual(self.snp_no_aa_1.f_afr, 1.0, places=4)
+        self.assertAlmostEqual(self.snp_no_aa_1.f_eur, 1.0, places=4)
+        self.assertAlmostEqual(self.snp_no_aa_1.f_eas, 1.0, places=4)
+        self.assertAlmostEqual(self.snp_no_aa_1.f_amr, 1.0, places=4)
 
         # snp_small_aa
-        self.assertAlmostEqual(self.snp_small_aa.f_sas, 0.0, places=4)
-        self.assertAlmostEqual(self.snp_small_aa.f_afr, 0.0008, places=4)
-        self.assertAlmostEqual(self.snp_small_aa.f_eur, 0.0, places=4)
-        self.assertAlmostEqual(self.snp_small_aa.f_eas, 0.0, places=4)
-        self.assertAlmostEqual(self.snp_small_aa.f_amr, 0.0, places=4)
+        self.assertAlmostEqual(self.snp_small_aa.f_sas, 1.0, places=4)
+        self.assertAlmostEqual(self.snp_small_aa.f_afr, 1.0 - 0.0008, places=4)
+        self.assertAlmostEqual(self.snp_small_aa.f_eur, 1.0, places=4)
+        self.assertAlmostEqual(self.snp_small_aa.f_eas, 1.0, places=4)
+        self.assertAlmostEqual(self.snp_small_aa.f_amr, 1.0, places=4)

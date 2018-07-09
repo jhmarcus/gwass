@@ -6,8 +6,22 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--summary_statistics', default=None, type=str, help='raw gwas summary statistics file downloaded', required=True)
 parser.add_argument('--snps', default=None, type=str, help='table of snps with derived / ancestral allele information', required=True)
+
+parser.add_argument('--snp_col', default=None, type=str, help='snp id column in raw summary statistics', required=True)
+parser.add_argument('--a1_col', default=None, type=str, help='effect allele in raw summary statistics', required=True)
+parser.add_argument('--a2_col', default=None, type=str, help='other allele in raw summary statistics', required=True)
+parser.add_argument('--beta_hat_col', default=None, type=str, help='measure of effect in raw summary statistics', required=True)
+parser.add_argument('--se_col', default=None, type=str, help='standard error in raw summary statistics', required=True)
+parser.add_argument('--p_value_col', default=None, type=str, help='', required=True)
+parser.add_argument('--sample_size_col', default=None, type=str, help='', required=True)
+parser.add_argument('--regression_type_col', default=None, type=str, help='type of regression used linear or logistic', required=True)
+
 parser.add_argument('--out', default=None, type=str, help='output prefix', required=True)
 args = parser.parse_args()
 
-s = gwass.SummaryStatistics(summary_statistics_path=args.summary_statistics, snps_path=args.snps)
+s = gwass.SummaryStatistics(summary_statistics_path=args.summary_statistics, snps_path=args.snps,
+                            snp_col=args.snp_col, a1_col=args.a1_col, a2_col=args.a2_col, 
+                            beta_hat_col=args.beta_hat_col, se_col=args.se_col, p_value_col=args.p_value_col,
+                            sample_size_col=args.sample_size_col, regression_type_col=args.regression_type_col)
+
 s.clean_summary_statistics(args.out)

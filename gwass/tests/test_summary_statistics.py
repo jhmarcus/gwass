@@ -10,7 +10,10 @@ class TestSummaryStatistics(TestCase):
         ''' '''
         summary_statistics_path = 'gwass/tests/test_data/summary_statistics/summary_statistics_test.tsv' 
         snps_path = 'gwass/tests/test_data/summary_statistics/snps_test.tsv'
-        self.ss = gwass.SummaryStatistics(snps_path=snps_path, summary_statistics_path=summary_statistics_path)
+        self.ss = gwass.SummaryStatistics(snps_path=snps_path, summary_statistics_path=summary_statistics_path,
+                                          snp_col='SNP', a1_col='A1', a2_col='A2', 
+                                          beta_hat_col='BETA', se_col='SE', p_value_col='NA', 
+                                          sample_size_col='NA', regression_type_col='linear')
 
     def test_read_summary_statistics(self):
         ''' '''
@@ -44,7 +47,7 @@ class TestSummaryStatistics(TestCase):
         self.ss._remove_indels()
         self.ss._merge_summary_statistics_with_snps()
         self.assertEqual(self.ss.summary_statistics.shape[0], 4) 
-        self.assertEqual(self.ss.summary_statistics.shape[1], 23) 
+        self.assertEqual(self.ss.summary_statistics.shape[1], 25) 
 
     def test_remove_strand_ambiguous_snp(self):
         ''' '''
@@ -65,7 +68,7 @@ class TestSummaryStatistics(TestCase):
         self.ss._merge_summary_statistics_with_snps()
         self.ss._remove_strand_ambiguous_snps()
         self.ss._orient_snp_effect_signs()
-        self.assertEqual(self.ss.summary_statistics['beta_hat'].tolist()[0], -.1)
+        self.assertEqual(self.ss.summary_statistics['beta_hat'].tolist()[0], .1)
 
     def test_clean_data_frame(self):
         ''' '''
